@@ -7,7 +7,7 @@ const path = require("path");
 
 const { Client: SSHClient } = require("ssh2");
 
-const configFileName = "./paynal.config";
+const configFileName = "paynal.config";
 const deployInfo = ".paynal-info";
 
 function statToAttrs(stats) {
@@ -207,9 +207,7 @@ class Client {
 }
 
 (async function () {
-    const config = normalizeConfig(require(
-        path.join(process.cwd(), configFileName)
-    ).default);
+    const config = normalizeConfig(require(getConfigFilePath()).default);
     const dsts = Object.keys(config.dst);
     if (dsts.length === 0) {
         console.log("No destinations defined");
@@ -406,7 +404,7 @@ function getLastDeployedMTimeMs(env) {
     if (!envData) {
         return 0;
     }
-    const lastConfigMTimeMs = fs.statSync("deploy.config.js").mtimeMs;
+    const lastConfigMTimeMs = fs.statSync(getConfigFilePath()).mtimeMs;
     if (envData.lastConfigMTimeMs !== lastConfigMTimeMs) {
         return 0;
     }
@@ -416,7 +414,7 @@ function getLastDeployedMTimeMs(env) {
 function saveLastDeployedMTimeMs(env) {
     const deployData = fs.existsSync(deployInfo) ? JSON.parse(fs.readFileSync(deployInfo)) : {};
     const envData = deployData[env] || (deployData[env] = {});
-    envData.lastConfigMTimeMs = fs.statSync("deploy.config.js").mtimeMs;
+    envData.lastConfigMTimeMs = fs.statSync(getConfigFilePath()).mtimeMs;
     envData.deployed = Date.now();
     fs.writeFileSync(deployInfo, JSON.stringify(deployData));
 }
@@ -466,4 +464,8 @@ async function runHook(config, event, args) {
         }
     }
     return true;
+}
+
+function getConfigFilePath() {
+    return path.join(process.cwd(), configFileName);
 }

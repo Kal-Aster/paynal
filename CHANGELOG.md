@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [1.3.0] - 19/11/2021
+- Fix save and load deployed mtime
+
 ## [1.2.0] - 19/11/2021
 - Fix config file import
 
