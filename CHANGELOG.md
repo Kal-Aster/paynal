@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [1.3.1] - 19/11/2021
+- Actually fix save and load deployed mtime
+
 ## [1.3.0] - 19/11/2021
 - Fix save and load deployed mtime
 

@@ -207,7 +207,7 @@ class Client {
 }
 
 (async function () {
-    const config = normalizeConfig(require(getConfigFilePath()).default);
+    const config = normalizeConfig(require(getConfigFilePath(true)).default);
     const dsts = Object.keys(config.dst);
     if (dsts.length === 0) {
         console.log("No destinations defined");
@@ -466,6 +466,6 @@ async function runHook(config, event, args) {
     return true;
 }
 
-function getConfigFilePath() {
-    return path.join(process.cwd(), configFileName);
+function getConfigFilePath(require = false) {
+    return path.join(process.cwd(), configFileName + (require ? "" : ".js"));
 }
