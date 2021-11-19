@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [1.3.2] - 19/11/2021
+- Fix normalizeEnv function
+
 ## [1.3.1] - 19/11/2021
 - Actually fix save and load deployed mtime
 

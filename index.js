@@ -307,6 +307,8 @@ function normalizeEnv(name, env) {
         return Object.freeze({
             name,
             path: env,
+            add: [],
+            skip: [],
             requires: []
         });
     }
