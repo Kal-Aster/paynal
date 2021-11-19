@@ -1,6 +1,6 @@
 {
   "name": "paynal",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Deploy files over FTP or SFTP",
   "main": "index.js",
   "bin": {

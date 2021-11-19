@@ -247,8 +247,6 @@ class Client {
     for (let i = 0; i < remotEnvs.length; i++) {
         const remotEnv = remotEnvs[i];
 
-        const envPaths = localPaths.concat(remotEnv.add).filter(path => !remotEnv.skip.includes(path));
-
         console.log(`Deploying "${remotEnv.name}"`);
 
         if (!(await runHook(config, "pre", [remotEnv, connection]))) {
@@ -257,6 +255,8 @@ class Client {
     
         const lastDeployedMTimeMs = getLastDeployedMTimeMs(remotEnv.name);
     
+        const envPaths = normalizeEnvPaths(remotEnv, localPaths);
+
         const sendingResult = { sent: 0, loading: 0, folders: 0 };
         await Promise.all(envPaths.map(dir => {
             return sendPathTo(
@@ -328,6 +328,27 @@ function normalizeEnv(name, env) {
             Array.isArray(env.requires) ? env.requires : [env.requires]
         ).filter(required => (typeof required === "string" || required instanceof String) && !!required && required !== name))
     })
+}
+
+function normalizeEnvPaths(env, paths) {
+    paths = paths.concat(env.add)
+        .filter(path => !env.skip.includes(path))
+        .map(path => path.replace(/[\/\\]+/g, "/"))
+    ;
+    for (let i = 0; i < paths.length - 1; i++) {
+        const path = paths[i];
+        if (!path.endsWith("/*")) {
+            continue;
+        }
+        paths.splice(i, 1);
+        const realPath = path.substr(0, path.length - 2) || ".";
+        if (!fs.existsSync(realPath)) {
+            return;
+        }
+        const files = fs.readdirSync(realPath).map(file => path.join(realPath, file));
+        paths.unshift(...files);
+        i += files.length;
+    }
 }
 
 function logSendingResult(sendingResult) {

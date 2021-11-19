@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [1.4.0] - 19/11/2021
+- Add support for glob source path
+
 ## [1.3.2] - 19/11/2021
 - Fix normalizeEnv function
 
