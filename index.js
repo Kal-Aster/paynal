@@ -335,13 +335,13 @@ function normalizeEnvPaths(env, paths) {
         .filter(path => !env.skip.includes(path))
         .map(path => path.replace(/[\/\\]+/g, "/"))
     ;
-    for (let i = 0; i < paths.length - 1; i++) {
-        const path = paths[i];
-        if (!path.endsWith("/*")) {
+    for (let i = 0; i < paths.length; i++) {
+        const currentPath = paths[i];
+        if (!currentPath.endsWith("/*")) {
             continue;
         }
         paths.splice(i, 1);
-        const realPath = path.substr(0, path.length - 2) || ".";
+        const realPath = currentPath.substr(0, currentPath.length - 2) || ".";
         if (!fs.existsSync(realPath)) {
             return;
         }
@@ -349,6 +349,8 @@ function normalizeEnvPaths(env, paths) {
         paths.unshift(...files);
         i += files.length;
     }
+
+    return paths;
 }
 
 function logSendingResult(sendingResult) {

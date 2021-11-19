@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [1.4.1] - 19/11/2021
+- Fix support for glob source path
+
 ## [1.4.0] - 19/11/2021
 - Add support for glob source path
 
