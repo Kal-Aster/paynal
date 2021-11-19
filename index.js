@@ -207,7 +207,9 @@ class Client {
 }
 
 (async function () {
-    const config = normalizeConfig(require(configFileName).default);
+    const config = normalizeConfig(require(
+        path.join(process.cwd(), configFileName)
+    ).default);
     const dsts = Object.keys(config.dst);
     if (dsts.length === 0) {
         console.log("No destinations defined");
