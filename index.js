@@ -343,7 +343,7 @@ function normalizeEnvPaths(env, paths) {
         paths.splice(i, 1);
         const realPath = currentPath.substr(0, currentPath.length - 2) || ".";
         if (!fs.existsSync(realPath)) {
-            return;
+            continue;
         }
         const files = fs.readdirSync(realPath).map(file => path.join(realPath, file));
         paths.unshift(...files);
